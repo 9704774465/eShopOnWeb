@@ -27,7 +27,6 @@ stages:
             inputs:
               command: 'build'
               projects: '**/*.sln'
-              arguments: '-no--restore'
             displayName: Build
           - task: DotNetCoreCLI@2
             inputs:

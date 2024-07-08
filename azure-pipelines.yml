@@ -44,5 +44,22 @@ stages:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'RetailApp'
             displayName: Publish-Artifacts
-              
-          
+  - stage: Deploy
+    jobs:
+      - job: Deploy
+        steps:
+          - task: DownloadBuildArtifacts@1
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'RetailApp'
+              downloadPath: '$(Build.ArtifactStagingDirectory)'
+            displayName: Download
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'Free Trial(584ffed6-e0a8-459e-bd00-108503a0a213)'
+              appType: 'webApp'
+              WebAppName: 'blackberry1'
+              packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+

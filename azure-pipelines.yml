@@ -45,8 +45,11 @@ stages:
               ArtifactName: 'RetailApp'
             displayName: Publish-Artifacts
   - stage: Deploy
+    displayName: Dev-Env
     jobs:
       - job: Deploy
+        pool:
+         vmImage: windows-latest
         steps:
           - task: DownloadBuildArtifacts@1
             inputs:
@@ -61,5 +64,5 @@ stages:
               azureSubscription: 'Free Trial(584ffed6-e0a8-459e-bd00-108503a0a213)'
               appType: 'webApp'
               WebAppName: 'blackberry1'
-              packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+              packageForLinux: '$(Build.ArtifactStagingDirectory)/**/Web.zip'
 

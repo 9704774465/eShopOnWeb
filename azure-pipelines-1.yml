@@ -47,23 +47,27 @@ stages:
   - stage: Deployment 
     displayName: dev_env
     jobs:
-      - job: deploy
+      - deployment: deploy
+        environment: Dev_Env
         pool :
          vmImage: windows-latest
-        steps:
-         - task: DownloadBuildArtifacts@1
-           inputs:
-             buildType: 'current'
-             downloadType: 'single'
-             artifactName: 'RetailAPP'
-             downloadPath: '$(Build.ArtifactStagingDirectory)'
-           displayName: download
-         - task: AzureRmWebAppDeployment@4
-           inputs:
-             ConnectionType: 'AzureRM'
-             azureSubscription: 'Free Trial(584ffed6-e0a8-459e-bd00-108503a0a213)'
-             appType: 'webApp'
-             WebAppName: 'blackberry1'
-             packageForLinux: '$(System.DefaultWorkingDirectory)/**/web*.zip'
+        strategy:
+         runOnce:
+          deploy:
+           steps:
+            - task: DownloadBuildArtifacts@1
+              inputs:
+               buildType: 'current'
+               downloadType: 'single'
+               artifactName: 'RetailAPP'
+               downloadPath: '$(Build.ArtifactStagingDirectory)'
+              displayName: download
+            - task: AzureRmWebAppDeployment@4
+              inputs:
+               ConnectionType: 'AzureRM'
+               azureSubscription: 'Free Trial(584ffed6-e0a8-459e-bd00-108503a0a213)'
+               appType: 'bb2'
+               WebAppName: 'blackberry1'
+               packageForLinux: '$(System.DefaultWorkingDirectory)/**/web.zip'
 
          

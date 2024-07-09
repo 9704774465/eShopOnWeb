@@ -59,7 +59,7 @@ stages:
               inputs:
                buildType: 'current'
                downloadType: 'single'
-               artifactName: 'ReatailAPP'
+               artifactName: 'ReatialAPP'
                downloadPath: '$(Build.ArtifactStagingDirectory)'
               displayName: download
             - task: AzureRmWebAppDeployment@4

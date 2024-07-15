@@ -64,7 +64,7 @@ stages:
            azureSubscription: 'Free Trial(584ffed6-e0a8-459e-bd00-108503a0a213)'
            appType: 'webApp'
            WebAppName: 'CloudKitchen1'
-           packageForLinux: '$(System.DefaultWorkingDirectory)/**/Web.zip'
+           packageForLinux: '$(Build.ArtifactStagingDirectory)/**/Web.zip'
         
 
 

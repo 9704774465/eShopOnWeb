@@ -65,6 +65,30 @@ stages:
            appType: 'webApp'
            WebAppName: 'CloudKitchen1'
            packageForLinux: '$(Build.ArtifactStagingDirectory)/**/Web.zip'
+  - stage: QA_ENV
+    displayName: QA_ENV
+    jobs:
+      - deployment: deploy
+        environment: QA_ENv
+        pool :
+         vmImage: windows-latest
+        strategy:
+         runOnce:
+           deploy:
+            steps :
+            - task: DownloadBuildArtifacts@1
+              inputs:
+               buildType: 'current'
+               downloadType: 'single'
+               artifactName: 'ServiceAPP'
+               downloadPath: '$(Build.ArtifactStagingDirectory)'
+            - task: AzureRmWebAppDeployment@4
+              inputs:
+               ConnectionType: 'AzureRM'
+               azureSubscription: 'Free Trial(584ffed6-e0a8-459e-bd00-108503a0a213)'
+               appType: 'webApp'
+               WebAppName: 'CloudKitchen2'
+               packageForLinux: '$(Build.ArtifactStagingDirectory)/**/Web.zip'
         
 
 

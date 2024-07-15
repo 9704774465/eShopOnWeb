@@ -1,0 +1,49 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+name: EshowWebAPP-P2
+trigger:
+- main
+resources:
+ repositories:
+   - repository: self
+stages:
+  - stage: Build
+    displayName: Build
+    jobs:
+      - job: Restore
+        pool: 
+          VmImage: ubuntu-latest
+        displayName: Restore
+        steps:
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'restore'
+              projects: '**/*.sln'
+              feedsToUse: 'select'
+            displayName: Restore
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'build'
+              projects: '**/*.sln'
+            displayName: Build
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'test'
+              projects: 'tests/UnitTests/*.csproj'
+            displayName: Unit-test
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'publish'
+              publishWebProjects: true
+              arguments: '-o $(Build.ArtifactStagingDirectory)'
+            displayName: Publish
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'ServiceAPP'
+            displayName: Publish-Artifact
+
+

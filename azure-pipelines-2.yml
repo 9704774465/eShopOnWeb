@@ -45,5 +45,26 @@ stages:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'ServiceAPP'
             displayName: Publish-Artifact
+  - stage: Deploy
+    displayName: DEV_ENV
+    jobs:
+      - job: Deploy
+        pool:
+         vmImage: windows-latest
+        steps:
+        - task: DownloadBuildArtifacts@1
+          inputs:
+            buildType: 'current'
+            downloadType: 'single'
+            artifactName: 'ServiceAPP'
+            downloadPath: '$(Build.ArtifactStagingDirectory)'
+        - task: AzureRmWebAppDeployment@4
+          inputs:
+           ConnectionType: 'AzureRM'
+           azureSubscription: 'Free Trial(584ffed6-e0a8-459e-bd00-108503a0a213)'
+           appType: 'webApp'
+           WebAppName: 'CloudKitchen1'
+           packageForLinux: '$(System.DefaultWorkingDirectory)/**/Web.zip'
+        
 
 
